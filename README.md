@@ -1,5 +1,5 @@
 # ClearCaseHelper #
-A collection of some clearcase helpers I found usefull.
+A collection of some clearcase helpers I found useful.
 
 ## ct-update-changelog ##
 ### Description ###
