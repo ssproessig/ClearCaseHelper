@@ -1,0 +1,4 @@
+ClearCaseHelper
+===============
+
+Some ClearCase helpers
