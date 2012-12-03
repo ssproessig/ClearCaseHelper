@@ -17,3 +17,14 @@ Collecting update information for 'update.2012-11-30T110925+0100.txt'...
 1->2: ssproess: added sample content
 </pre>
 
+### Requirements ###
+* tested with Python 2.7
+
+### Creating a Windows .exe ###
+* install py2exe  [see http://www.py2exe.org/]
+<pre>
+D:\ClearCaseHelper\ct-update-changelog>python setup.py py2exe
+...
+D:\ClearCaseHelper\ct-update-changelog>cd dist
+D:\ClearCaseHelper\ct-update-changelog\dist>dir ct-update-changelog.exe
+</pre>
