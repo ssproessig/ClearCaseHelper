@@ -81,7 +81,8 @@ class ClearToolUpdateChangeLog:
 			clParam = info.getNextCtParameters()
 			print("\n[%s]" % (clParam.relFullPath))
 			while (clParam):
-				cmd = 'cleartool describe -fmt "%%u: %%c" %s@@/main/%d' % (clParam.relFullPath, clParam.mainPos)
+				fileRev = '%s@@/main/%d' % (clParam.relFullPath, clParam.mainPos)
+				cmd = ["cleartool", "describe -fmt \"%%u: %%c\"", fileRev]
 				p = subprocess.Popen(cmd, stdout=subprocess.PIPE, shell=False)
 				out, err = p.communicate()				
 				print("%d->%d: %s" % (clParam.mainPos-1, clParam.mainPos, out.strip()))
