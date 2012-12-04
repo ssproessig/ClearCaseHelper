@@ -9,6 +9,8 @@ import sys
 import re
 import subprocess
 
+import platform
+
 class UpdateInfo:
 	def __init__(self, reResult):
 		self.relFullPath = reResult.group(1).strip().split("\n")[0]
@@ -26,9 +28,22 @@ class ClearToolUpdateChangeLog:
 	def parseArgs(self, args):
 		parser = OptionParser()
 		parser.add_option("-u", "--updt", dest="updt", help="The update result file to parser.")
+		parser.add_option("-f", "--format", dest="format", help="The format the load rule is given (use 'Windows' for \main\X, or 'Linux' for /main/X.")
 
 		(self.options, args) = parser.parse_args(args)
-		
+				
+		if self.options.format is None:
+			self.options.format = platform.system()
+		if self.options.format not in ('Windows', 'Linux'):
+			self.options.format = None
+		if self.options.format is None:
+			print("Can not determine the load rule format to use. Please specifiy one with -f")
+			sys.exit(1)
+		if self.options.format == "Windows":
+			self.loadRuleFormat = "\\\\main\\\\"
+		if self.options.format == "Linux":
+			self.loadRuleFormat = "/main/"
+
 		if self.options.updt is None:
 			print("You must provide a .updt file (result of 'cleartool update')! See help with -h for more information.")
 			sys.exit(1)
@@ -52,7 +67,7 @@ class ClearToolUpdateChangeLog:
 		updateInformation = list()
 		# parse all lines
 		for line in lines:
-			m = re.search('Updated:[ ]+(.*)\\\\main\\\\(\d+) \\\\main\\\\(\d+)', line)
+			m = re.search('Updated:[ ]+(.*)' + self.loadRuleFormat + '(\d+) ' + self.loadRuleFormat + '(\d+)', line)
 			if (m == None):
 				continue
 			entry = UpdateInfo(m)
