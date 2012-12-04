@@ -8,6 +8,7 @@ from optparse import OptionParser
 import sys
 import re
 import subprocess
+import shlex
 
 import platform
 
@@ -81,8 +82,8 @@ class ClearToolUpdateChangeLog:
 			clParam = info.getNextCtParameters()
 			print("\n[%s]" % (clParam.relFullPath))
 			while (clParam):
-				fileRev = '%s@@/main/%d' % (clParam.relFullPath, clParam.mainPos)
-				cmd = ["cleartool", "describe -fmt \"%%u: %%c\"", fileRev]
+				clArgs = "cleartool describe -fmt \"%%u: %%c\" %s@@/main/%d" % (clParam.relFullPath.encode('string-escape'), clParam.mainPos)
+				cmd = shlex.split(clArgs)
 				p = subprocess.Popen(cmd, stdout=subprocess.PIPE, shell=False)
 				out, err = p.communicate()				
 				print("%d->%d: %s" % (clParam.mainPos-1, clParam.mainPos, out.strip()))
